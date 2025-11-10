@@ -1,74 +1,42 @@
-🎯 Amaç
+📌 Proje Hakkında
+Bu proje, bir güzellik salonunun günlük operasyonlarını yönetmek için tasarlanmış bir veritabanı sistemidir. Microsoft Access kullanılarak geliştirilmiştir.
+🎯 Projenin Amacı
 
-Bu Access veritabanı, bir güzellik merkezinde yer alan uzmanlar, verilen hizmetler ve yapılan uygulamaları yönetmek amacıyla hazırlanmıştır.
-Veritabanı, ilişkisel veri yapısını örneklemek ve temel Access bileşenlerinin (tablolar, ilişkiler, sorgular, raporlar) kullanımını göstermek için oluşturulmuştur.
+Güzellik uzmanlarının bilgilerini saklamak
+Sunulan hizmetleri kayıt altına almak
+Müşteri uygulamalarını takip etmek
+Uzmanlık alanlarına göre hizmet dağılımını yönetmek
+Denetim ve gözetim süreçlerini kaydetmek
 
-🧩 Veritabanı Yapısı
+🗂️ Veritabanı Yapısı
+Tablolar:
+1. GuzellikUzmanlari
+Salonda çalışan uzmanların bilgilerini tutar.
 
-1. BeautyExperts (Güzellik Uzmanı) Tablosu
+id (Otomatik Sayı, Birincil Anahtar)
+uzmanAdi (Kısa Metin, 100 karakter)
 
-Alan Adı	Açıklama
-id	Otomatik artan birincil anahtar
-name	Güzellik uzmanının adı ve soyadı
+2. Hizmetler
+Salonda sunulan hizmetlerin listesini içerir.
 
-2. Services (Hizmetler) Tablosu
+id (Otomatik Sayı, Birincil Anahtar)
+hizmetAdi (Kısa Metin, 100 karakter)
+uzmanID (Sayı, Yabancı Anahtar → GuzellikUzmanlari)
 
-Alan Adı	Açıklama
-id	Otomatik artan birincil anahtar
-name	Hizmetin adı
-expert_id	Hizmeti hazırlayan güzellik uzmanının kimliği (FK → BeautyExperts.id)
+3. Uygulamalar
+Müşterilere yapılan uygulamaların detaylarını saklar.
 
-3. Applications (Uygulamalar) Tablosu
+id (Otomatik Sayı, Birincil Anahtar)
+hizmetID (Sayı, Yabancı Anahtar → Hizmetler)
+musteriAdi (Kısa Metin, 100 karakter)
+uygulamaTuru (Kısa Metin, 50 karakter)
+sure (Sayı, dakika cinsinden)
+uygulayan (Sayı, Yabancı Anahtar → GuzellikUzmanlari)
+denetleyen (Sayı, Yabancı Anahtar → GuzellikUzmanlari)
 
-Alan Adı	Açıklama
-id	Otomatik artan birincil anahtar
-service_id	Uygulama yapılan hizmetin kimliği (FK → Services.id)
-customer_name	Müşterinin adı
-type	Hizmet türü (Saç, Tırnak, Ayak vb.)
-duration	Hizmetin süresi (dakika)
-applied_by	Uygulamayı yapan uzman (FK → BeautyExperts.id)
-supervised_by	Uygulamayı denetleyen uzman (FK → BeautyExperts.id)
 🔗 İlişkiler
 
-Services.expert_id → BeautyExperts.id
-
-Applications.service_id → Services.id
-
-Applications.applied_by → BeautyExperts.id
-
-Applications.supervised_by → BeautyExperts.id
-
-Tüm ilişkiler referential integrity kurallarıyla oluşturulmuştur.
-
-🧮 Örnek Veriler
-
-4 güzellik uzmanı (Ayşe Korkmaz, Elif Demir, Merve Yıldız, Seda Özcan)
-
-5 hizmet (Saç Kesimi, Manikür, Pedikür, Cilt Bakımı, Kaş Tasarımı)
-
-5 uygulama (farklı müşterilerle ve farklı sürelerde)
-
-🔍 Oluşturulan Sorgular
-
-Q_BeautyExpertsApplications → Uzmanlar ve yaptıkları uygulamaların listesi
-
-Q_ServiceWithExpert → Hizmetler ve onları hazırlayan uzmanlar
-
-Q_ApplicationDetails → Uygulama, hizmet ve ilgili uzman bilgilerini birleştirir
-
-📊 Rapor
-
-R_BeautyExpertsApplications adlı rapor, her uzmanın yaptığı uygulamaları gruplandırılmış biçimde listeler.
-(Veri kaynağı: Q_BeautyExpertsApplications sorgusu)
-
-🧱 Kullanılan Access Özellikleri
-
-Tablo oluşturma ve ilişkilendirme
-
-SQL ile veri ekleme
-
-Sorgu oluşturma (JOIN yapıları)
-
-Rapor tasarımı
-
-Veri bütünlüğü (foreign key ilişkileri)
+Hizmetler → GuzellikUzmanlari (Bir uzman birden fazla hizmet verebilir)
+Uygulamalar → Hizmetler (Her uygulama bir hizmete bağlıdır)
+Uygulamalar → GuzellikUzmanlari (Uygulayan uzman)
+Uygulamalar → GuzellikUzmanlari (Denetleyen uzman)
